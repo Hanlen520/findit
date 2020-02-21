@@ -18,9 +18,11 @@ findit的最佳实践是配置在服务器上，以服务的形式满足不同�
 
 ## 服务端部署
 
-服务端需求 python3.6+，**强烈推荐**用 docker 与 docker-compose 部署。
+服务端需求 python3.6+，**推荐**用 docker 与 docker-compose 部署。
 
-完整服务包括三个部分：
+### 用 docker 部署
+
+docker模式提供了一整套完整服务，非常适合部署在远程服务器。包括三个部分：
 
 - 文件管理UI（端口29410）
 - nginx文件服务器（端口29411）
@@ -38,13 +40,31 @@ docker-compose up -d
 
 简而言之，你可以在文件管理器上直接管理你的资源，并让它被findit使用。文件管理器来自 [filebrowser](https://github.com/filebrowser/filebrowser)。
 
-## 客户端配置
+### 用 命令行 部署
 
-目前我们提供了python版本的client，其他语言待开发，如果有兴趣的话欢迎加入！
+当然，如果你不想使用docker，你也可以直接用命令行启动 findit-server。
 
-- [python2/3](https://github.com/williamfzc/findit-client)
-- java
-- ...
+```bash
+pip install findit[web]
+python -m findit.server --dir YOUR_PICTURE_DIR --port YOUR_PORT
+```
+
+- `YOUR_PICTURE_DIR` 换成你的图片库根目录
+    - 如 `--dir ~/my_picture_dir`
+    - 之后当 findit-server 需要图片时，会根据你传入的相对路径以这个目录为准开始查找
+- `YOUR_PORT` 服务端口，默认9410
+
+## 客户端
+
+目前我们优先支持python2/3，可方便地嵌入现有框架，为框架带来图像识别能力。比起findit本身，它：
+
+- 更为清晰且丰富的API，支持相同甚至更多的功能
+- 更加简单易用，无需自己进行数据处理
+- 依赖少，兼容性强
+- 灵活（client能够连接本地或远程的服务。如果你并不希望把server部署到远程，你可以非常方便地在本地启动服务器并接入它）
+- 与代码库分离的规范化图片管理
+
+请从这里 [Python2/3 项目](https://github.com/williamfzc/findit-client) 开始吧：）
 
 ## 一个完整例子
 
